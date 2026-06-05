@@ -1,4 +1,4 @@
-package com.paulofelipe.social_media_manager.infrastructure_security;
+package com.paulofelipe.socialmediamanager.infrastructure.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

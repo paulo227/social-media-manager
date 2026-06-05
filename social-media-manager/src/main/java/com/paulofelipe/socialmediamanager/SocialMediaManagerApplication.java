@@ -1,4 +1,4 @@
-package com.paulofelipe.social_media_manager;
+package com.paulofelipe.socialmediamanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
