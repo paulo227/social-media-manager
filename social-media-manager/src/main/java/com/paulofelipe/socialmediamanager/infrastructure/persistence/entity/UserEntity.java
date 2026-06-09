@@ -61,5 +61,11 @@ public class UserEntity {
         this.email = email;
     }
 
-    // getters e setters
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
