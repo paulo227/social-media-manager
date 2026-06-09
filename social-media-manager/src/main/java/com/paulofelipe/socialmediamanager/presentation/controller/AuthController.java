@@ -5,6 +5,7 @@ import com.paulofelipe.socialmediamanager.domain.entity.User;
 import com.paulofelipe.socialmediamanager.infrastructure.security.JwtTokenProvider;
 import com.paulofelipe.socialmediamanager.presentation.dto.LoginRequestDTO;
 import com.paulofelipe.socialmediamanager.presentation.dto.LoginResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody LoginRequestDTO dto) {
+    public LoginResponseDTO login(@Valid @RequestBody LoginRequestDTO dto) {
         User user = authenticateUserUseCase.execute(dto.getEmail(), dto.getPassword());
         String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
         return new LoginResponseDTO(token, user.getId(), user.getName(), user.getEmail());
