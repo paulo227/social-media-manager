@@ -3,13 +3,16 @@ package com.paulofelipe.socialmediamanager.presentation.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paulofelipe.socialmediamanager.application.usecase.CreateUserUseCase;
 import com.paulofelipe.socialmediamanager.domain.entity.User;
-import com.paulofelipe.socialmediamanager.infrastructure.security.SecurityConfig;
 import com.paulofelipe.socialmediamanager.presentation.dto.UserRequestDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-@Import(SecurityConfig.class)
+@Import(UserControllerTest.TestSecurityConfig.class)
 class UserControllerTest {
 
     @Autowired
@@ -46,5 +49,21 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Paulo"))
                 .andExpect(jsonPath("$.email").value("paulo@email.com"));
+    }
+
+    @org.springframework.boot.test.context.TestConfiguration
+    static class TestSecurityConfig {
+
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            http
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .authorizeHttpRequests(auth -> auth
+                            .anyRequest().permitAll()
+                    )
+                    .formLogin(AbstractHttpConfigurer::disable)
+                    .httpBasic(AbstractHttpConfigurer::disable);
+            return http.build();
+        }
     }
 }
