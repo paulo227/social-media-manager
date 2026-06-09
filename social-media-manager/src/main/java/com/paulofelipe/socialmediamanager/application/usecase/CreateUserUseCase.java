@@ -1,6 +1,7 @@
 package com.paulofelipe.socialmediamanager.application.usecase;
 
 import com.paulofelipe.socialmediamanager.domain.entity.User;
+import com.paulofelipe.socialmediamanager.domain.exception.DuplicateEmailException;
 import com.paulofelipe.socialmediamanager.domain.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class CreateUserUseCase {
 
         userRepository.findByEmail(user.getEmail())
                 .ifPresent(u -> {
-                    throw new RuntimeException("Email já existe");
+                    throw new DuplicateEmailException("Email já existe");
                 });
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

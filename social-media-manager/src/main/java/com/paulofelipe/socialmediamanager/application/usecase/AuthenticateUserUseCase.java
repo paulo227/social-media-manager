@@ -1,6 +1,7 @@
 package com.paulofelipe.socialmediamanager.application.usecase;
 
 import com.paulofelipe.socialmediamanager.domain.entity.User;
+import com.paulofelipe.socialmediamanager.domain.exception.InvalidCredentialsException;
 import com.paulofelipe.socialmediamanager.domain.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,6 @@ public class AuthenticateUserUseCase {
     public User execute(String email, String password) {
         return userRepository.findByEmail(email)
                 .filter(u -> passwordEncoder.matches(password, u.getPassword()))
-                .orElseThrow(() -> new RuntimeException("Credenciais inválidas"));
+                .orElseThrow(() -> new InvalidCredentialsException("Credenciais inválidas"));
     }
 }

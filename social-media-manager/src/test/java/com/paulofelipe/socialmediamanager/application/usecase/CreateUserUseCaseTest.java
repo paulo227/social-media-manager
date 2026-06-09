@@ -1,5 +1,6 @@
 package com.paulofelipe.socialmediamanager.application.usecase;
 import com.paulofelipe.socialmediamanager.domain.entity.User;
+import com.paulofelipe.socialmediamanager.domain.exception.DuplicateEmailException;
 import com.paulofelipe.socialmediamanager.domain.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,8 +45,8 @@ import static org.mockito.Mockito.*;
             when(repository.findByEmail(user.getEmail()))
                     .thenReturn(Optional.of(user));
 
-            RuntimeException exception = assertThrows(
-                    RuntimeException.class,
+            DuplicateEmailException exception = assertThrows(
+                    DuplicateEmailException.class,
                     () -> useCase.execute(user)
             );
 
