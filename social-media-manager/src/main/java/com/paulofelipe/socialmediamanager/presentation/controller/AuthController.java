@@ -5,6 +5,8 @@ import com.paulofelipe.socialmediamanager.domain.entity.User;
 import com.paulofelipe.socialmediamanager.infrastructure.security.JwtTokenProvider;
 import com.paulofelipe.socialmediamanager.presentation.dto.LoginRequestDTO;
 import com.paulofelipe.socialmediamanager.presentation.dto.LoginResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Autenticar usuário", description = "Retorna um token JWT")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
     public LoginResponseDTO login(@Valid @RequestBody LoginRequestDTO dto) {
         User user = authenticateUserUseCase.execute(dto.getEmail(), dto.getPassword());
         String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
